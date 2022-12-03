@@ -1,0 +1,7 @@
+group:
+  name: "test"
+  id: 1
+
+web:
+  host: "google.com"
+  port: 80
