@@ -13,8 +13,8 @@ var DB *gorm.DB
 var App = gin.Default()
 
 func init() {
-	initSettings()
-	initDB()
+	// initSettings()
+	// initDB()
 }
 
 func initDB() {
