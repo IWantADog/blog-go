@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 
 	"gopkg.in/yaml.v2"
 )
@@ -16,11 +17,12 @@ func LoadYaml(filename string, structPoint interface{}) {
 
 func getConfFolderPath() string {
 	// yaml与main.go在同一层级
-	currentFile, err := os.Getwd()
-	if err != nil {
-		panic(err)
+	_, currentFile, _, ok := runtime.Caller(0)
+	if !ok {
+		panic("callers error")
 	}
-	return currentFile
+	dirName := filepath.Dir(filepath.Dir(currentFile))
+	return dirName
 }
 
 func loadYaml(filePath string, point interface{}) {
