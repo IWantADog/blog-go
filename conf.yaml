@@ -1,4 +1,2 @@
 mysql:
-  host: "127.0.0.1"
-  port: 3306
-  db: "blog"
+  uri: "root:@tcp(127.0.0.1:3306)/blog?charset=utf8mb4"
