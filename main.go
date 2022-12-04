@@ -6,7 +6,7 @@ import (
 	"github.com/blog/src"
 )
 
-var createDB = flag.Bool("createDB", true, "init db schema")
+var createDB = flag.Bool("createDB", false, "init db schema")
 var runServer = flag.Bool("runServer", false, "start app")
 
 func main() {
