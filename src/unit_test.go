@@ -36,6 +36,7 @@ func TestLoadYaml(t *testing.T) {
 	p := &tf
 	loadYaml(testYaml, p)
 
+	fmt.Printf("t ---- %T", p)
 	if tf.Group.ID != 1 {
 		t.Fail()
 	}

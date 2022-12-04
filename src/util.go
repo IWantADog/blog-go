@@ -15,11 +15,12 @@ func LoadYaml(filename string, structPoint interface{}) {
 }
 
 func getConfFolderPath() string {
+	// yaml与main.go在同一层级
 	currentFile, err := os.Getwd()
 	if err != nil {
 		panic(err)
 	}
-	return filepath.Dir(currentFile)
+	return currentFile
 }
 
 func loadYaml(filePath string, point interface{}) {

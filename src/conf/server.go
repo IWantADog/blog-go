@@ -1,11 +1,9 @@
 package conf
 
 type mysqlConf struct {
-	Host   string
-	Port   int32
-	DBName string
+	Uri string
 }
 
 type ServerConf struct {
-	mysql *mysqlConf
+	Mysql *mysqlConf
 }
