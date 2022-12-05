@@ -1,4 +1,4 @@
-package src
+package global
 
 import (
 	"log"
@@ -21,7 +21,7 @@ func getConfFolderPath() string {
 	if !ok {
 		panic("callers error")
 	}
-	dirName := filepath.Dir(filepath.Dir(currentFile))
+	dirName := filepath.Clean(filepath.Join(currentFile, "../../.."))
 	return dirName
 }
 

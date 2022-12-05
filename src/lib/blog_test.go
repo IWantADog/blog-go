@@ -3,8 +3,8 @@ package lib
 import (
 	"testing"
 
-	"github.com/blog/src"
-	"github.com/blog/src/model"
+	"github.com/blog/global/global"
+	"github.com/blog/global/model"
 )
 
 func TestGetBlogs(t *testing.T) {
@@ -12,15 +12,14 @@ func TestGetBlogs(t *testing.T) {
 		Name: "auther-1",
 		Desc: "xxxxxx",
 	}
-
-	src.DB.Create(&auther)
+	global.DB.Create(&auther)
 
 	blog := model.Blog{
 		Title:    "xxxx",
 		Content:  "xxxx",
 		AuthorID: int(auther.ID),
 	}
-	result := src.DB.Create(&blog)
+	result := global.DB.Create(&blog)
 	if result.Error != nil {
 		panic(result.Error)
 	}

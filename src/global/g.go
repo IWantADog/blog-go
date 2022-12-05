@@ -1,10 +1,9 @@
-package src
+package global
 
 import (
 	"log"
 
 	"github.com/blog/src/conf"
-	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -12,10 +11,9 @@ import (
 var (
 	Settings = conf.ServerConf{}
 	DB       *gorm.DB
-	App      = gin.Default()
 )
 
-func init() {
+func LoadSettings() {
 	initSettings()
 	initDB()
 }
