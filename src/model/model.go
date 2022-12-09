@@ -5,23 +5,23 @@ import (
 )
 
 type Blog struct {
-	gorm.Model
-	Title    string
-	Content  string
-	AuthorID int
-	Author   Author `gorm:"constraint:OnDelete:SET NULL"`
-	Tag      []*Tag `gorm:"many2many:tag_blog_rel"`
+	gorm.Model `json:"-"`
+	Title      string `json:"title"`
+	Content    string `json:"content"`
+	AuthorID   int    `json:"-"`
+	Author     Author `gorm:"constraint:OnDelete:SET NULL" json:"author"`
+	Tag        []*Tag `gorm:"many2many:tag_blog_rel" json:"tag"`
 }
 
 type Tag struct {
-	gorm.Model
-	Name  string
-	Desc  string
-	Blogs []*Blog `gorm:"many2many:tag_blog_rel"`
+	gorm.Model `json:"-"`
+	Name       string  `json:"name"`
+	Desc       string  `json:"desc"`
+	Blogs      []*Blog `gorm:"many2many:tag_blog_rel" json:"-"`
 }
 
 type Author struct {
-	gorm.Model
-	Name string
-	Desc string
+	gorm.Model `json:"-"`
+	Name       string `gorm:"uniqueIndex" json:"name"`
+	Desc       string `json:"desc"`
 }
