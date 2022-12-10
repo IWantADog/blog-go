@@ -2,4 +2,4 @@ mysql:
   uri: "root:@tcp(127.0.0.1:3306)/blog?charset=utf8mb4&parseTime=true"
 
 redis:
-  
+  uri: "redis://:@127.0.0.1:6379/0"

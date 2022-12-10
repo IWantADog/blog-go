@@ -11,4 +11,5 @@ func (b *BizError) Error() string {
 	return fmt.Sprintf("Bizerror: code=%d, msg=%s", b.Code, b.Msg)
 }
 
+var RecordNotExist = BizError{Code: 1, Msg: "record not exist"}
 var AuthorNameRepeatError = BizError{Code: 1000, Msg: "author create error: name repeat"}

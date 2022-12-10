@@ -22,6 +22,7 @@ type Tag struct {
 
 type Author struct {
 	gorm.Model `json:"-"`
-	Name       string `gorm:"uniqueIndex" json:"name"`
+	Name       string `gorm:"uniqueIndex;size:50" json:"name"`
 	Desc       string `json:"desc"`
+	Password   string `gorm:"size:64" json:"-"`
 }

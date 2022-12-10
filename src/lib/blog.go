@@ -9,7 +9,7 @@ import (
 
 func GetAllBlog() []model.Blog {
 	var blogs []model.Blog
-	result := global.DB.Find(&blogs)
+	result := global.GetDB().Find(&blogs)
 	if result.Error != nil {
 		log.Fatal("get blogs error")
 	}

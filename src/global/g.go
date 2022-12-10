@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/blog/src/conf"
+	"github.com/go-redis/redis/v9"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -11,6 +12,7 @@ import (
 var (
 	Settings = conf.ServerConf{}
 	globalDB *gorm.DB
+	rdb      *redis.Client
 )
 
 func LoadSettings() {
@@ -32,6 +34,23 @@ func initDB() {
 		log.Fatal("initDB error: can not open mysql")
 	}
 	globalDB = db
+}
+
+func GetRedis() *redis.Client {
+	// TODO: 加锁，避免多次实例化
+	if rdb == nil {
+		rdb = initRedis()
+	}
+	return rdb
+}
+
+func initRedis() *redis.Client {
+	uri := Settings.Redis.Uri
+	opt, err := redis.ParseURL(uri)
+	if err != nil {
+		log.Fatalf("initRedis error: %s\n", err.Error())
+	}
+	return redis.NewClient(opt)
 }
 
 func initSettings() {
