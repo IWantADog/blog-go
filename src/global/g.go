@@ -10,12 +10,19 @@ import (
 
 var (
 	Settings = conf.ServerConf{}
-	DB       *gorm.DB
+	globalDB *gorm.DB
 )
 
 func LoadSettings() {
 	initSettings()
 	initDB()
+}
+
+func GetDB() *gorm.DB {
+	if globalDB == nil {
+		log.Fatal("error: db is nil")
+	}
+	return globalDB
 }
 
 func initDB() {
@@ -24,7 +31,7 @@ func initDB() {
 	if err != nil {
 		log.Fatal("initDB error: can not open mysql")
 	}
-	DB = db
+	globalDB = db
 }
 
 func initSettings() {
