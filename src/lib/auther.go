@@ -7,24 +7,30 @@ import (
 	"github.com/blog/src/common"
 	"github.com/blog/src/global"
 	"github.com/blog/src/model"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
-func CreateAuthor(name, desc string) (uint, error) {
+func CreateAuthor(name, password, desc string) (*model.Author, error) {
 	if is_repeat := checkAuthorNameRepeat(name); is_repeat {
-		return 0, &common.AuthorNameRepeatError
+		return nil, &common.AuthorNameRepeatError
 	}
-	author := model.Author{Name: name, Desc: desc}
+
+	hashPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		panic(err)
+	}
+	author := model.Author{Name: name, Desc: desc, Password: string(hashPassword)}
 	result := global.GetDB().Create(&author)
 	if result.Error != nil {
 		log.Fatalf("author create error: %v", result.Error)
 	}
-	return author.ID, nil
+	return &author, nil
 }
 
 func checkAuthorNameRepeat(name string) bool {
-	author := model.Author{Name: name}
-	err := global.GetDB().First(&author).Error
+	author := model.Author{}
+	err := global.GetDB().Where("name = ?", name).First(&author).Error
 	return !errors.Is(err, gorm.ErrRecordNotFound)
 }
 

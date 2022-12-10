@@ -1,12 +1,8 @@
 package lib
 
-type AuthorBaseInfo struct {
-	ID   uint   `json:"id"`
-	Name string `json:"name"`
-	Desc string `json:"desc"`
-}
-
 type LoginRespInfo struct {
-	*AuthorBaseInfo
+	ID    uint   `json:"id"`
+	Name  string `json:"name"`
+	Desc  string `json:"desc"`
 	Token string `json:"token"`
 }

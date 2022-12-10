@@ -6,21 +6,26 @@ import (
 	"time"
 
 	"github.com/blog/src/global"
+	"github.com/google/uuid"
 )
 
 const TokenExpiration time.Duration = 60 * 60
 
-type token string
+type Token string
 
-func CreateToken() token {
-
+func CreateToken() Token {
+	uuid, err := uuid.NewRandom()
+	if err != nil {
+		panic(err)
+	}
+	return Token(uuid.String())
 }
 
-func (t *token) genTokenKey() string {
+func (t *Token) genTokenKey() string {
 	return fmt.Sprintf("token:%s", *t)
 }
 
-func (t *token) Find() (uint, error) {
+func (t *Token) Find() (uint, error) {
 	rdb := global.GetRedis()
 	ctx := context.Background()
 	value, err := rdb.Get(ctx, t.genTokenKey()).Int()
@@ -31,8 +36,13 @@ func (t *token) Find() (uint, error) {
 }
 
 // TODO: 如果一个用户持续在线，考虑如何延长用户token的过期时间
-func (t *token) Set(id uint, ttl time.Duration) {
+func (t *Token) Set(id uint, ttl time.Duration) {
 	rdb := global.GetRedis()
 	ctx := context.Background()
 	rdb.Set(ctx, t.genTokenKey(), id, ttl)
+}
+
+func (t *Token) Delete() {
+	rdb := global.GetRedis()
+	rdb.Del(context.Background(), t.genTokenKey()).Result()
 }

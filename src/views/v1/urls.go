@@ -15,6 +15,9 @@ func RegisterRoute(app *gin.Engine) {
 	// authors
 	group.GET("authors/", getAuthor)
 	group.POST("authors/", createAuthor)
+
+	// login
+	group.POST("login/", login)
 }
 
 func helloWorld(c *gin.Context) {

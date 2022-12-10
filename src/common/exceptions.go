@@ -12,4 +12,5 @@ func (b *BizError) Error() string {
 }
 
 var RecordNotExist = BizError{Code: 1, Msg: "record not exist"}
+var WrongPassword = BizError{Code: 2, Msg: "wrong password"}
 var AuthorNameRepeatError = BizError{Code: 1000, Msg: "author create error: name repeat"}

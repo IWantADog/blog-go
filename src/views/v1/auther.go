@@ -13,19 +13,22 @@ func getAuthor(c *gin.Context) {
 }
 
 type authorSchema struct {
-	Name string `json:"name" binding:"required"`
-	Desc string `json:"desc" binding:"required"`
+	Name     string `json:"name" binding:"required"`
+	Desc     string `json:"desc" binding:"required"`
+	Password string `json:"password" binding:"required"`
 }
 
 func createAuthor(c *gin.Context) {
 	var schema authorSchema
 	if err := c.BindJSON(&schema); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
 
-	id, err := lib.CreateAuthor(schema.Name, schema.Desc)
+	author, err := lib.CreateAuthor(schema.Name, schema.Password, schema.Desc)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
-	c.JSON(http.StatusOK, gin.H{"id": id})
+	c.JSON(http.StatusOK, author)
 }
