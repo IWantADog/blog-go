@@ -2,6 +2,7 @@ package lib
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -9,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-const TokenExpiration time.Duration = 60 * 60
+const TokenExpiration time.Duration = time.Hour
 
 type Token string
 
@@ -25,21 +26,33 @@ func (t *Token) genTokenKey() string {
 	return fmt.Sprintf("token:%s", *t)
 }
 
-func (t *Token) Find() (uint, error) {
+func (t *Token) Find() (*AuthorBaseInfo, error) {
 	rdb := global.GetRedis()
 	ctx := context.Background()
-	value, err := rdb.Get(ctx, t.genTokenKey()).Int()
+	value, err := rdb.Get(ctx, t.genTokenKey()).Result()
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
-	return uint(value), nil
+
+	var authorInfo AuthorBaseInfo
+	err = json.Unmarshal([]byte(value), &authorInfo)
+	if err != nil {
+		panic(err)
+	}
+	return &authorInfo, nil
 }
 
 // TODO: 如果一个用户持续在线，考虑如何延长用户token的过期时间
-func (t *Token) Set(id uint, ttl time.Duration) {
+func (t *Token) Set(authorInfo *AuthorBaseInfo, ttl time.Duration) {
 	rdb := global.GetRedis()
 	ctx := context.Background()
-	rdb.Set(ctx, t.genTokenKey(), id, ttl)
+
+	data, err := json.Marshal(authorInfo)
+	if err != nil {
+		panic(err)
+	}
+	key := t.genTokenKey()
+	rdb.Set(ctx, key, string(data), ttl)
 }
 
 func (t *Token) Delete() {

@@ -22,12 +22,15 @@ func Login(name, password string) (*LoginRespInfo, error) {
 	}
 
 	token := CreateToken()
-	token.Set(author.ID, TokenExpiration)
+	authorBaseInfo := AuthorBaseInfo{
+		Name: author.Name,
+		ID:   author.ID,
+		Desc: author.Desc,
+	}
+	token.Set(&authorBaseInfo, TokenExpiration)
 	return &LoginRespInfo{
-		Token: string(token),
-		Name:  author.Name,
-		ID:    author.ID,
-		Desc:  author.Desc,
+		Token:          string(token),
+		AuthorBaseInfo: &authorBaseInfo,
 	}, nil
 }
 

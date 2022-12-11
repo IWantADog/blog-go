@@ -18,6 +18,7 @@ func RegisterRoute(app *gin.Engine) {
 
 	// login
 	group.POST("login/", login)
+	group.POST("logout/", logout)
 }
 
 func helloWorld(c *gin.Context) {
